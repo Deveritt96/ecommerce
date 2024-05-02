@@ -48,20 +48,15 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   try {
-    // Find the category by ID in the request parameters
     const category = await Category.findByPk(req.params.id);
 
-    // If category with the given ID does not exist, return 404 Not Found
     if (!category) {
       return res.status(404).json({ error: 'Category not found' });
     }
 
-    // Update the category's name with the value from request body
     await category.update({ category_name: req.body.category_name });
-    //return new category if successful
     res.status(200).json(category);
   } catch (error) {
-    // If an error occurs, return 500 Internal Server Error
     console.error('Error updating category:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
@@ -75,13 +70,10 @@ router.delete('/:id', async (req, res) => {
         id: req.params.id,
       },
     });
-
-    // If category with the given ID does not exist, return 404 Not Found
     if (!categoryData) {
       res.status(404).json({ message: 'No category with that id!' });
       return;
     }
-
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
